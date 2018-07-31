@@ -1,0 +1,105 @@
+/******************************/
+.el-tabs__content {
+  overflow: unset !important;
+}
+/******搜索form的样式**/
+.operate-row {
+  margin: 15px 0px;
+}
+.operate-row .el-input__inner {
+  font-size: 15px;
+  border: 1px solid #bbb;
+  border-radius: 0px;
+}
+.operate-row .el-button {
+  font-size: 14px;
+  border-radius: 0px;
+  float: right;
+  margin-left: 20px;
+}
+.operate-row .el-form-item {
+  margin-right: 0px !important;
+  text-align: center;
+}
+.operate-row .el-form-item__label {
+}
+/*****表格列表的样式***/
+.table-row {
+  margin-bottom: 20px;
+  -moz-box-shadow:2px 2px 5px #999;
+  -webkit-box-shadow:2px 2px 5px #999;
+  box-shadow:2px 2px 5px #999;
+  background-color: #ffffff;
+  padding: 0 20px;
+}
+.table-row .table-header {
+  height: 50px;
+  border-bottom: 1px solid #eee;
+}
+.table-row .table-header span {
+  margin-top: 10px;
+}
+.table-row .el-table td, .el-table th {
+  padding: 0 0;
+}
+.table-row .el-table th, .el-table tr {
+  height: 44px;
+}
+.table-row .el-table td, .el-table th.is-leaf {
+  border-bottom: 0;
+}
+.table-row .el-table th {
+  background-color: #87A0BE;
+  color: #E9EFF4;
+}
+.table-row .el-table .stripe-row {
+  background-color: #DDEBF8;
+}
+/********tab切颜色改成白色***********/
+.el-tabs__nav-wrap::after {
+  background-color: #fff;
+}
+/*分页样式*/
+#planManageId .pageDiv {
+  padding: 10px;
+  height: 35px;
+  background-color: rgb(255, 255, 255);
+}
+
+.pageDiv .page {
+  float: right;
+}
+
+.el-pager li.active {
+  color: rgb(255, 255, 255);
+  background-color: #a7bbf5;
+  border: 1px solid;
+  width: 27px;
+  border-radius: 6px;
+}
+
+.el-pager li.number {
+  width: 27px;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+}
+
+.el-pager li {
+  width: 27px;
+  min-width: 0px;
+  margin-left: 10px;
+  font-family: 宋体;
+}
+
+.el-pagination button {
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  width: 27px;
+  min-width: 0px;
+}
+
+.el-pagination .btn-next {
+  margin-left: 10px;
+  padding-left: 6px;
+}
+/**************/
