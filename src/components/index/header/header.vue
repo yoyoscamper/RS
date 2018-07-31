@@ -1,11 +1,24 @@
 <template>
-  <div class="header">
+  <div id="header" class="header">
     <div class="head-user">
-      <div class="logo"  v-on:click="toHomePage">
-        <img src="../../../../static/images/logo.jpg" id="homePageLoge" style="width: 148px;">
+      <!--<div class="head-left">-->
+        <!--<img src="../../../../static/images/materialDefault.png" id="homePageLoge" style="width: 60px;">-->
+      <!--</div>-->
+      <div class="head-left">
+        <label class="mes-title">锐师</label>
       </div>
-      <div class="head-left" style="margin-left: 185px">
-        <label class="mes-title">研发制造管理系统</label>
+      <div class="menu-list">
+        <label class="menu-info" onclick="chooseMenu('mien')">风采</label>
+        <label class="menu-info" onclick="chooseMenu('videoView')">课程观看</label>
+        <label class="menu-info" onclick="chooseMenu('thematicCourse')">专题课程</label>
+        <label class="menu-info" onclick="chooseMenu('forum')">论坛</label>
+      </div>
+      <div class="search-box">
+        <el-input
+          placeholder="请输入内容"
+          prefix-icon="el-icon-search"
+          v-model="searchContent">
+        </el-input>
       </div>
       <div class="user-setting">
         <div class="loginout" @click="loginOut">
@@ -15,27 +28,11 @@
           <img src="../../../../static/images/sz.png" @click="showPassForm"/>
         </div>
         <div class="user-info" v-cloak>
-          <!--<div class="user-portrait">-->
-            <!--&lt;!&ndash;<img src="../../../../static/images/ty.png" />&ndash;&gt;-->
-            <!--<img src="../../../../static/images/tx_black.png" />-->
-          <!--</div>-->
-          <div>
-              <el-dropdown @command="changeRole" style="margin-left: 15px">
-                <span class="el-dropdown-link">
-                  {{currRole.roleName}}
-                </span>
-                <el-dropdown-menu slot="dropdown" style="max-height: 300px;overflow-y: scroll">
-                  <el-dropdown-item :command="role" v-for="role in roleList" :key="role.roleId">{{role.roleName}}</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            <div>{{currUser.userName}}</div>
+          <div class="user-portrait">
+            <!--<img src="../../../../static/images/ty.png" />-->
+            <img src="../../../../static/images/tx_black.png" />
           </div>
-
         </div>
-       <!-- <div class="daiban" @click="operatingFloor">
-          <img title="工作台" width="30px" height="30px" src="../../../../static/images/daiban.png"/>
-          <span class="daiban-num">{{workNum}}</span>
-        </div>-->
       </div>
     </div>
     <el-dialog title="修改密码" :visible.sync="passFormVisible" @close="closePassDialog" :close-on-click-modal="false">
@@ -91,7 +88,6 @@
         }
       };
       return {
-        workNum: 12, // 待办个数
         passWidth: '120px',
         persionVisible: false,
         passFormVisible: false,
@@ -113,54 +109,11 @@
             { validator: validatePass, trigger: 'blur' }
           ]
         },
-        curDate: '',
-        curWeek: '',
-        weatherImg: '',
-        curTemp: '',
-        roleList: [],
-        currRole: {}
+        searchContent: '',  // 搜索内容
+        currMenu: '' // 当前菜单
       };
     },
     methods: {
-      queryRole () { // 查询当前用户的所有角色
-        let self = this;
-        let url = '/api/sysUser/queryRoleListByCurrUserId';
-        this.$axios.get(url)
-          .then((res) => {
-            let success = res.data.status;
-            if (success === true) {
-              this.roleList = res.data.model;
-              if (this.roleList.length > 0) {
-                // this.currRole = this.roleList[0];
-                this.$nextTick(function () {
-                  this.queryCurrRole();
-                });
-              }
-            } else {
-              self.$message.error(res.data.message);
-            }
-          })
-          .catch((error) => {
-            self.logining = false;
-            console.log(error);
-            self.$message.error('登陆失败，请联系后台管理员');
-          });
-      },
-      changeRole (role) {
-        this.$confirm('确认切换角色为' + role.roleName + '?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'info'
-        }).then(() => {
-          this.currRole = role;
-          this.setCurrRole();
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消切换'
-          });
-        });
-      },
       toHomePage () {
         this.$router.push('/homePage');
       },
@@ -208,76 +161,18 @@
         this.passFormVisible = false;
         this.$refs['passForm'].resetFields();
       },
-      queryCurrRole () { // 查询当前角色
-        let self = this;
-        let url = '/api/sysUser/getCurrRoleId';
-        this.$axios.get(url)
-          .then((res) => {
-            let success = res.data.status;
-            if (success === true) {
-              if (res.data.model === '' || res.data.model === undefined || res.data.model === 'undefined') {
-                this.currRole = this.roleList[0];
-                this.setCurrRole();
-              } else {
-                for (let i = 0; i < this.roleList.length; i++) {
-                  if (this.roleList[i].roleId === res.data.model) {
-                    this.currRole = this.roleList[i];
-                  }
-                }
-                if (this.currRole.roleId === undefined || this.currRole.roleId === '') {
-                  this.currRole = this.roleList[0];
-                  this.setCurrRole();
-                }
-              }
-            } else {
-              self.$message.error(res.data.message);
-            }
-          })
-          .catch((error) => {
-            self.logining = false;
-            console.log(error);
-            self.$message.error('登陆失败，请联系后台管理员');
-          });
-      },
-      setCurrRole () { // 设置当前角色
-        let self = this;
-        let url = '/api/sysUser/setCurrRoleId?roleId=' + this.currRole.roleId;
-        this.$axios.get(url)
-          .then((res) => {
-            let success = res.data.status;
-            if (success === true) {
-              this.$message({
-                type: 'success',
-                message: '设置当前角色成功!'
-              });
-              this.$store.dispatch('setActiveMenu', 'agency');
-              console.log(this.$route.path);
-              if (this.$route.path === '/agency') {
-                window.location.reload();
-              }
-              this.$router.push({
-                name: 'agency'
-              });
-              // this.$emit('getCurrRole', this.currRole.roleId);
-            } else {
-              self.$message.error(res.data.message);
-            }
-          })
-          .catch((error) => {
-            self.logining = false;
-            console.log(error);
-            self.$message.error('登陆失败，请联系后台管理员');
-          });
+      chooseMenu (currMenu) { // 切换菜单
+        this.currMenu = currMenu;
       }
     },
     watch: {
-      currRole: function () {
-        this.$emit('getCurrRole', this.currRole.roleId); // 给父组件传值，隐藏弹出框
+      currMenu: function () {
+        this.$emit('setCurrMenu', this.currMenu); // 给父组件传值，隐藏弹出框
       }
     },
     mounted: function () {
       this.$nextTick(function () {
-        this.queryRole();
+        // this.queryRole();
         this.currUser = JSON.parse(sessionStorage.currUser);
         // function isEmptyObject (obj) {
         //   for (var key in obj) {
@@ -324,6 +219,13 @@
     font-size: 18px;
     color: #ffffff;
   }
+  #header .menu-list, #header .search-box{
+    flex: 3;
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    color: #ffffff;
+  }
   .user-setting div {
     float: right;
   }
@@ -333,31 +235,12 @@
     box-sizing: border-box;
     position: relative;
   }
-  .daiban{
-    position: relative;
-    margin-right: 20px;
-    cursor: pointer;
-    padding: 5px;
-    height: 40px;
-  }
   .header .el-dialog{
     width: 40%;
   }
   .header .el-dialog .el-form{
     width: 80%;
     margin: 0 auto;
-  }
-  .daiban-num{
-    position: absolute;
-    min-width: 20px;
-    height: 20px;
-    line-height: 20px;
-    border-radius: 10px;
-    background-color: #ffffff;
-    color: #ff0000;
-    text-align: center;
-    top: -10px;
-    right: -10px;
   }
   .user-info{
     font-size: 16px;
@@ -384,24 +267,6 @@
     cursor: pointer;
     float: right;
     line-height: 4;
-  }
-  .daiban{
-    cursor: pointer;
-    float: right;
-    line-height: 4;
-  }
-  .daiban-num{
-    position: absolute;
-    min-width: 20px;
-    height: 20px;
-    line-height: 20px;
-    border-radius: 10px;
-    background-color: #ffffff;
-    color: #ff0000;
-    text-align: center;
-    top: 5px;
-    font-size: 14px;
-    right: -7px;
   }
   .setting {
     float: right;
@@ -431,9 +296,13 @@
     left: 0;
     width: 188px;
   }
-  .header .el-dropdown{
-    font-size: 16px !important;
-    color: #fff !important;
+  #header .menu-info{
+    padding-right: 20px;
     cursor: pointer;
+  }
+  #header .menu-info:hover{
+    padding-right: 20px;
+    cursor: pointer;
+    color: #d8efff;
   }
 </style>

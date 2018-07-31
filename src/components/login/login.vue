@@ -4,7 +4,7 @@
       <div class="login_box">
         <div class="login_form_box">
           <div style="flex: 1;text-align: center;">
-            <img src="../../../static/images/logo.jpg" width="188px">
+            <img src="../../../static/images/materialDefault.png" width="188px">
             <span style="color:#fff;font-size:32px;display: block;margin-top: 19px">锐师教育</span>
           </div>
           <div class="login-form" style="flex: 1">
@@ -35,7 +35,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import axios from 'axios';
+  // import axios from 'axios';
   export default {
     computed: mapGetters({
       token: 'getToken'
@@ -67,14 +67,15 @@
         this.$refs['loginForm'].validate((valid) => {
           if (valid) {
             self.logining = true;
-            let params = new URLSearchParams();
-            params.append('phone', this.loginForm.userName);
-            params.append('password', this.loginForm.password);
+            let params = {
+              phone: self.loginForm.userName,
+              password: self.loginForm.password
+            };
             let url = '/api/1.0/mems/passwordLogin';
-            this.$axios.post(url, params, {
+            self.$axios.post(url, params, {
               headers: {
                 'x-ml-appid': '56b17529169e7d000197d2d7',
-                'content-type': 'application/json;charset=UTF-8'
+                'content-type': 'application/json'
               }
             }, {emulateJSON: true})
               .then((res) => {
@@ -82,11 +83,10 @@
                 if (success === true) {
                   self.$store.dispatch('setToken', 'Bearer ' + res.data.model.token);
                   self.$store.dispatch('setCurrUser', JSON.stringify(res.data.model.currUser));
-                  axios.defaults.headers.common['Authorization'] = this.$store.getters.getToken;
+                  // axios.defaults.headers.common['Authorization'] = self.$store.getters.getToken;
                   self.logining = false;
-                  // setInterval(this.refresh, 70000);
+                  // setInterval(self.refresh, 70000);
                   // self.$router.push('/homePage');
-                  self.$router.push('/agency');
                 } else {
                   self.logining = false;
                   self.$message.error(res.data.message);
@@ -97,6 +97,7 @@
                 console.log(error);
                 self.$message.error('登陆失败，请联系后台管理员');
               });
+            self.$router.push('/index');
           }
         });
       }
