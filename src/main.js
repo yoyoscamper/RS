@@ -26,6 +26,7 @@ Vue.use(EasyScroll);
 Vue.use(vueResource);
 Vue.config.productionTip = false; // 来关闭生产模式下给出的提示
 Vue.prototype.$axios = axios;
+Vue.prototype.$store = store;
 // Vue.use(mock);
 axios.defaults.withCredentials = true;// 让ajax携带cookie
 Vue.use(VueRouter); // 使用vue-router
