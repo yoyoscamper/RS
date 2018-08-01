@@ -25,7 +25,13 @@ import EasyScroll from 'easyscroll';
 Vue.use(EasyScroll);
 Vue.use(vueResource);
 Vue.config.productionTip = false; // 来关闭生产模式下给出的提示
-Vue.prototype.$axios = axios;
+Vue.prototype.$axios = axios.create({
+  headers: {
+    'x-ml-appid': '56b17529169e7d000197d2d7',
+    'x-ml-apikey': 'eDhNSWZfaUNIV0RyYmdTcnlpY3dSdw',
+    'content-type': 'application/json'
+  }
+});
 Vue.prototype.$store = store;
 // Vue.use(mock);
 axios.defaults.withCredentials = true;// 让ajax携带cookie

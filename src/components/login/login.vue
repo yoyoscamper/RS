@@ -76,10 +76,6 @@
             };
             let url = '/api/1.0/mems/passwordLogin';
             self.$axios.post(url, params, {
-              headers: {
-                'x-ml-appid': this.$store.state.appId,
-                'content-type': 'application/json'
-              }
             }, {emulateJSON: true})
               .then((res) => {
                 let success = res.data.status;

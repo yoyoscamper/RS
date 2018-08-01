@@ -5,9 +5,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    appId: '56b17529169e7d000197d2d7',
-    appKey: 'eDhNSWZfaUNIV0RyYmdTcnlpY3dSdw',
-    masterKey: 'bUxiYS0yNnlXRGQxaXNOQUpVVzFVQQ',
     token: '',
     currUser: {},
     activeMenu: sessionStorage.activeMenu || ''
