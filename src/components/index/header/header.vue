@@ -8,10 +8,12 @@
         <label class="mes-title">锐师</label>
       </div>
       <div class="menu-list">
-        <label class="menu-info" onclick="chooseMenu('mien')">风采</label>
-        <label class="menu-info" onclick="chooseMenu('videoView')">课程观看</label>
-        <label class="menu-info" onclick="chooseMenu('thematicCourse')">专题课程</label>
-        <label class="menu-info" onclick="chooseMenu('forum')">论坛</label>
+        <el-menu :default-active="activeMenu" class="el-menu-demo" mode="horizontal" @select="handleSelect" router>
+          <el-menu-item index="mien" onclick="chooseMenu('mien')">风采</el-menu-item>
+          <el-menu-item index="videoViewMain" onclick="chooseMenu('videoViewMain')">课程观看</el-menu-item>
+          <el-menu-item index="courseMain" onclick="chooseMenu('courseMain')">专题课程</el-menu-item>
+          <el-menu-item index="forumMain" onclick="chooseMenu('forumMain')">论坛</el-menu-item>
+        </el-menu>
       </div>
       <div class="search-box">
         <el-input
@@ -165,6 +167,13 @@
         this.currMenu = currMenu;
       }
     },
+    computed: {
+      activeMenu () {
+        console.log('activeMenu');
+        console.log(this.$store.state.activeMenu);
+        return this.$store.state.activeMenu;
+      }
+    },
     watch: {
       currMenu: function () {
         this.$emit('setCurrMenu', this.currMenu); // 给父组件传值，隐藏弹出框
@@ -304,5 +313,17 @@
     padding-right: 20px;
     cursor: pointer;
     color: #d8efff;
+  }
+  #header .el-menu-item.is-active {
+    background-color: rgba(64, 158, 255, 0);
+  }
+  #header .el-menu {
+    background-color: rgba(255, 255, 255, 0);
+  }
+  #header .el-menu--horizontal>.el-menu-item {
+    color: #ecf5ff;
+  }
+  #header .el-menu--horizontal {
+    border-bottom: solid 1px rgba(230, 230, 230, 0);
   }
 </style>
