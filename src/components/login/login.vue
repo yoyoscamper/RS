@@ -5,7 +5,7 @@
         <div class="login_form_box">
           <div style="flex: 1;text-align: center;">
             <img src="../../../static/images/materialDefault.png" width="188px">
-            <span style="color:#fff;font-size:32px;display: block;margin-top: 19px">锐师教育</span>
+            <span style="color:#fff;font-size:32px;display: block;margin-top: 19px">锐师</span>
           </div>
           <div class="login-form" style="flex: 1">
             <div class="form-div">
@@ -59,6 +59,9 @@
       };
     },
     methods: {
+      handleSelect (key, keyPath) {
+        console.log(key, keyPath);
+      },
       ...mapActions({
         setToken: 'setToken'
       }),
