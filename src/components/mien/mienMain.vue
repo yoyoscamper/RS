@@ -3,40 +3,7 @@
     <el-row>
       <el-col :span="5">
         <div class="grid-content">
-          <el-row class="class-icon">
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-          </el-row>
-          <el-row class="class-icon">
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-          </el-row>
-          <el-row class="class-icon">
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-          </el-row>
-          <el-row class="class-icon">
+          <el-row class="class-icon" v-for="item in 4" :key="item">
             <el-col :span="8">
               <el-tag>语文</el-tag>
             </el-col>
@@ -69,58 +36,7 @@
         </el-row>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="24">
-        <div class="grid-content bg-purple-dark">
-          <h1 class="article-category-title">实战推荐</h1>
-        </div>
-      </el-col>
-      <el-col :span="6" v-for="quick in quickList">
-        <div class="article-image">
-          <img :src="quick.quickImageUrl"/>
-        </div>
-        <div class="article-title">
-          <p>各类比赛各类比赛各类比赛各类比赛各类比赛</p>
-        </div>
-        <div class="article-info">
-          <i class="article-viewCount">1268</i>
-          <i class="article-time">一个月前</i>
-        </div>
-      </el-col>
-      <el-col :span="24">
-        <div class="grid-content bg-purple-dark">
-          <h1 class="article-category-title">实战推荐</h1>
-        </div>
-      </el-col>
-      <el-col :span="6" v-for="quick in quickList">
-        <div class="article-image">
-          <img :src="quick.quickImageUrl"/>
-        </div>
-        <div class="article-title">
-          <p>各类比赛各类比赛各类比赛各类比赛各类比赛</p>
-        </div>
-        <div class="article-info">
-          <i class="article-viewCount">1268</i>
-          <i class="article-time">一个月前</i>
-        </div>
-      </el-col>
-      <el-col :span="24">
-        <div class="grid-content bg-purple-dark">
-          <h1 class="article-category-title">实战推荐</h1>
-        </div>
-      </el-col>
-      <el-col :span="6" v-for="quick in quickList">
-        <div class="article-image">
-          <img :src="quick.quickImageUrl"/>
-        </div>
-        <div class="article-title">
-          <p>各类比赛各类比赛各类比赛各类比赛各类比赛</p>
-        </div>
-        <div class="article-info">
-          <i class="article-viewCount">1268</i>
-          <i class="article-time">一个月前</i>
-        </div>
-      </el-col>
+    <el-row v-for="item in 4" :key="item">
       <el-col :span="24">
         <div class="grid-content bg-purple-dark">
           <h1 class="article-category-title">实战推荐</h1>
