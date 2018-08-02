@@ -12,13 +12,13 @@
         </el-col>
       </el-row>
       <el-row  id="forumList">
-          <el-col  :span="12" v-for="forum in forumList" :key="forum.id" class="forumInfo">
-            <div>
+          <el-col :span="12" v-for="forum in forumList" :key="forum.id" class="forumInfo" @click="chooseForum(forum.id)">
+            <div  @click="chooseForum(forum.id)">
               <img class="forumLogo" :src="forum.imgUrl"/>
               <label class="forumName" v-html="forum.name"></label>
               <!--<el-button type="primary"  size="mini" plain >进入</el-button>-->
             </div>
-            <div class="forumNum">
+            <div class="forumNum"  @click="chooseForum(forum.id)">
               <label>关注：{{forum.guanzhuNum}}</label>
               <label>帖子：{{forum.tieziNum}}</label>
             </div>
@@ -89,6 +89,13 @@
             }
           ]// 论坛版块
         };
+      },
+      methods: {
+        chooseForum (forumId) { // 选择板块
+          console.log(1111);
+          window.open(window.location.origin + '/noteList');
+          // this.$router.push({name: 'noteList', params: {forumId: forumId}});
+        }
       }
     };
 </script>
@@ -130,5 +137,8 @@
   }
   .forumName{
     font-size: 24px;
+  }
+  .block{
+    box-shadow: 4px 4px 12px #888888
   }
 </style>
