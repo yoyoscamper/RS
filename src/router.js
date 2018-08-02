@@ -2,6 +2,7 @@ const Login = () => import('./components/login/login');
 const Index = () => import('./components/index/index');
 const mien = () => import('./components/mien/mienMain');
 const forumMain = () => import('./components/forum/forumMain');
+const noteList = () => import('./components/forum/noteList');
 const videoViewMain = () => import('./components/videoView/videoViewMain');
 const courseMain = () => import('./components/thematicCourse/courseMain');
 
@@ -28,6 +29,9 @@ const routers = [ // 定义vue-router的路径和对应的组件，注意是comp
       },
       {
         name: 'courseMain', path: '/courseMain', component: courseMain
+      },
+      {
+        name: 'noteList', path: '/noteList', component: noteList
       }
     ]
   }
