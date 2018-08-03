@@ -92,7 +92,6 @@
       },
       methods: {
         chooseForum (forumId) { // 选择板块
-          console.log(1111);
           window.open(window.location.origin + '/noteList');
           // this.$router.push({name: 'noteList', params: {forumId: forumId}});
         }

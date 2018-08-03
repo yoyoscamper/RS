@@ -3,6 +3,9 @@
     <div id="noteTitle">
       <img class="noteTitlePic" :src="noteInfo.imgUrl"/>
     </div>
+    <div>
+      <i id="toWriteBtn" class="el-icon-edit-outline" @click="toWrite"></i>
+    </div>
     <div id = "noteInfo">
       <img class="noteLogo" :src="noteInfo.logoUrl" />
       <lable id="noteName" class="noteContent">{{noteInfo.title}}</lable>
@@ -25,85 +28,99 @@
         </div>
       </el-tab-pane>
     </el-tabs>
+    <writeNote :newNote="newNote" @headCallBack="headCallBack"></writeNote>
   </div>
 </template>
 
 <script>
-    export default {
-      name: 'noteList',
-      data: function () {
-        return {
-          paneType: 'all',
-          paneLoading: false,
-          isFocus: false,
-          noteInfo: {
-            imgUrl: require('../../assets/forumPic/timg.jpg'),
-            logoUrl: require('../../assets/forumPic/yuwen.jpg'),
-            title: '语文',
-            guanzhuNum: 10,
-            tieziNum: 2
+  import writeNote from './writeNote';
+  export default {
+    name: 'noteList',
+    components: {
+      writeNote
+    },
+    data: function () {
+      return {
+        newNote: {
+          dialogVisible: false
+        },
+        paneType: 'all',
+        paneLoading: false,
+        isFocus: false,
+        noteInfo: {
+          imgUrl: require('../../assets/forumPic/timg.jpg'),
+          logoUrl: require('../../assets/forumPic/yuwen.jpg'),
+          title: '语文',
+          guanzhuNum: 10,
+          tieziNum: 2
+        },
+        paneList: [
+          {
+            name: '全部'
           },
-          paneList: [
-            {
-              name: '全部'
-            },
-            {
-              name: '热门'
-            }
-          ],
-          noteList: [
-            {
-              id: '12',
-              userName: '一清',
-              title: '问题处理',
-              date: '2018-02-09',
-              contentNum: 3,
-              content: '这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录',
-              logoUrl: require('../../assets/forumPic/username.png')
-            },
-            {
-              id: '11',
-              userName: '一清',
-              title: '问题处理',
-              date: '2018-02-09',
-              contentNum: 3,
-              content: '这是一条记录',
-              logoUrl: require('../../assets/forumPic/username.png')
-            }
-          ]
-        };
-      },
-      methods: {
-        changeFocus () {
-          this.isFocus = !this.isFocus;
-        },
-        queryNoteList () { // 查询帖子
-          this.paneLoading = true;
-          for (let i = 0; i < this.noteList.length; i++) {
-            if (this.noteList[i].content.length > 20) {
-              this.noteList[i].content = this.noteList[i].content.substring(0, 20) + '...';
-            }
+          {
+            name: '热门'
           }
-          this.paneLoading = false;
-        },
-        changePane (name) {
-          if (name === '全部') {
-            this.paneType = 'all';
-            this.queryNoteList();
-            // 查全部
-          } else {
-            this.paneType = 'hot';
-            this.queryNoteList();
-            // 查热门
+        ],
+        noteList: [
+          {
+            id: '12',
+            userName: '一清',
+            title: '问题处理',
+            date: '2018-02-09',
+            contentNum: 3,
+            content: '这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录',
+            logoUrl: require('../../assets/forumPic/username.png')
+          },
+          {
+            id: '11',
+            userName: '一清',
+            title: '问题处理',
+            date: '2018-02-09',
+            contentNum: 3,
+            content: '这是一条记录',
+            logoUrl: require('../../assets/forumPic/username.png')
+          }
+        ]
+      };
+    },
+    methods: {
+      headCallBack () { // 关闭新建帖子弹框
+        this.newNote.dialogVisible = false;
+      },
+      toWrite () { // 打开新建帖子弹框
+        this.newNote.dialogVisible = true;
+      },
+      changeFocus () {
+        this.isFocus = !this.isFocus;
+      },
+      queryNoteList () { // 查询帖子
+        this.paneLoading = true;
+        for (let i = 0; i < this.noteList.length; i++) {
+          if (this.noteList[i].content.length > 20) {
+            this.noteList[i].content = this.noteList[i].content.substring(0, 20) + '...';
           }
         }
+        this.paneLoading = false;
       },
-      mounted: function () {
-        this.$nextTick(function () {
+      changePane (name) {
+        if (name === '全部') {
+          this.paneType = 'all';
           this.queryNoteList();
-        });
+            // 查全部
+        } else {
+          this.paneType = 'hot';
+          this.queryNoteList();
+            // 查热门
+        }
       }
-    };
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this.queryNoteList();
+      });
+    }
+  };
 </script>
 
 <style scoped>
@@ -192,5 +209,14 @@
   .noteInfoTitle:hover{
     text-decoration: underline;
     color: #050ac5;
+  }
+  #toWriteBtn{
+    color: #ffffff;
+    background: #939da4;
+    font-size: 36px;
+    position: fixed;
+    right: 120px;
+    top: 194px;
+    cursor: pointer;
   }
 </style>
