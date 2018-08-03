@@ -8,11 +8,11 @@
       <lable id="noteName" class="noteContent">{{noteInfo.title}}</lable>
       <label class="noteContent noteFocus">关注：{{noteInfo.guanzhuNum}}</label>
       <label class="noteContent noteNum">帖子：{{noteInfo.tieziNum}}</label>
-      <el-button class="focusBtn" size="small" type="primary" v-if="!isFocus">关注</el-button>
-      <el-button class="focusBtn" size="small" type="primary" v-else>已关注</el-button>
+      <el-button class="focusBtn" size="small" type="primary" v-if="!isFocus" @click="changeFocus">关注</el-button>
+      <el-button type="primary" plain class="focusBtn" size="small" v-else @click="changeFocus">已关注</el-button>
     </div>
     <el-tabs type="border-card">
-      <el-tab-pane :label="pane.name" v-for="pane in paneList" :key="pane.name">
+      <el-tab-pane :label="pane.name" v-for="pane in paneList" :key="pane.name" @click="changePane(pane.name)" v-loading="paneLoading">
         <div v-for="note in noteList" :key="note.id" class="noteListContent">
             <i class="el-icon-message"></i>
             <label class="contentNum">{{note.contentNum}}</label>
@@ -20,6 +20,7 @@
             <label class="noteDate">{{note.date}}</label>
             <label class="noteUserName">{{note.userName}}</label>
             <img class="noteUserLogo" :src="note.logoUrl"/>
+            <br>
             <label class="noteInfoContent">{{note.content}}</label>
         </div>
       </el-tab-pane>
@@ -32,6 +33,8 @@
       name: 'noteList',
       data: function () {
         return {
+          paneType: 'all',
+          paneLoading: false,
           isFocus: false,
           noteInfo: {
             imgUrl: require('../../assets/forumPic/timg.jpg'),
@@ -55,7 +58,7 @@
               title: '问题处理',
               date: '2018-02-09',
               contentNum: 3,
-              content: '这是一条记录',
+              content: '这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录这是一条记录',
               logoUrl: require('../../assets/forumPic/username.png')
             },
             {
@@ -69,6 +72,36 @@
             }
           ]
         };
+      },
+      methods: {
+        changeFocus () {
+          this.isFocus = !this.isFocus;
+        },
+        queryNoteList () { // 查询帖子
+          this.paneLoading = true;
+          for (let i = 0; i < this.noteList.length; i++) {
+            if (this.noteList[i].content.length > 20) {
+              this.noteList[i].content = this.noteList[i].content.substring(0, 20) + '...';
+            }
+          }
+          this.paneLoading = false;
+        },
+        changePane (name) {
+          if (name === '全部') {
+            this.paneType = 'all';
+            this.queryNoteList();
+            // 查全部
+          } else {
+            this.paneType = 'hot';
+            this.queryNoteList();
+            // 查热门
+          }
+        }
+      },
+      mounted: function () {
+        this.$nextTick(function () {
+          this.queryNoteList();
+        });
       }
     };
 </script>
@@ -129,6 +162,8 @@
   .noteInfoContent{
     font-size: 12px;
     color: #333;
+    cursor: pointer;
+    margin-left: 29px
   }
   .noteUserName, .noteDate{
     float: right;
@@ -147,8 +182,15 @@
     color: #bbbbbb;
   }
   .noteListContent{
-    height: 40px;
+    height: 48px;
     margin-top: 10px;
     border-bottom: 1px solid #f5f5f5;
+  }
+  .noteInfoTitle{
+    cursor: pointer;
+  }
+  .noteInfoTitle:hover{
+    text-decoration: underline;
+    color: #050ac5;
   }
 </style>
