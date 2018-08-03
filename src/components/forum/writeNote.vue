@@ -25,7 +25,16 @@
           </el-dialog>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="投票贴" name="second">投票贴</el-tab-pane>
+      <el-tab-pane label="投票贴" name="second">
+        <el-form ref="tpForm" :model="tpForm" label-width="52px" :rules="tpRules">
+          <el-form-item label="标题" prop="name">
+            <el-input v-model="ztForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="内容" prop="desc">
+            <el-input type="textarea" v-model="ztForm.desc"></el-input>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
     </el-tabs>
     <span slot="footer" class="dialog-footer">
     <el-button @click="handleClose">取 消</el-button>
@@ -49,7 +58,19 @@
             name: '',
             desc: ''
           },
+          tpForm: {
+            name: '',
+            desc: ''
+          },
           ztRules: {
+            desc: [
+              { required: true, message: '请填写内容', trigger: 'blur' }
+            ]
+          },
+          tpRules: {
+            name: [
+              { required: true, message: '请填写标题', trigger: 'blur' }
+            ],
             desc: [
               { required: true, message: '请填写内容', trigger: 'blur' }
             ]
