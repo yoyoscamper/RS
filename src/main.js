@@ -27,8 +27,8 @@ Vue.use(vueResource);
 Vue.config.productionTip = false; // 来关闭生产模式下给出的提示
 Vue.prototype.$axios = axios.create({
   headers: {
-    'x-ml-appid': '56b17529169e7d000197d2d7',
-    'x-ml-apikey': 'eDhNSWZfaUNIV0RyYmdTcnlpY3dSdw',
+    'x-ml-appid': '5add7ee40351cb0007295c8f',
+    'x-ml-apikey': 'amtKNmFmbS1YVm9wbHRfWFNJdDFYZw',
     'content-type': 'application/json'
   }
 });

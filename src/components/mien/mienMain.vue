@@ -3,15 +3,9 @@
     <el-row>
       <el-col :span="5">
         <div class="grid-content">
-          <el-row class="class-icon" v-for="item in 4" :key="item">
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
-            </el-col>
-            <el-col :span="8">
-              <el-tag>语文</el-tag>
+          <el-row>
+            <el-col :span="8" v-for="category in articleCategories" :key="item">
+              <el-tag class="class-icon">{{category.name}}</el-tag>
             </el-col>
           </el-row>
         </div>
@@ -25,24 +19,24 @@
           </el-carousel>
         </div>
         <el-row>
-          <el-col :span="6" v-for="quick in quickList">
+          <el-col :span="6" v-for="banner in banners">
             <div class="channel">
               <a href="" target="_blank">
-                <img class="channel-image" :src="quick.quickImageUrl"></img>
-                <p class="challen-title">{{quick.quickName}}</p>
+                <img class="channel-image" :src="banner.bannerImageUrl"></img>
+                <p class="challen-title">{{banner.bannerName}}</p>
               </a>
             </div>
           </el-col>
         </el-row>
       </el-col>
     </el-row>
-    <el-row v-for="item in 4" :key="item">
+    <el-row v-for="category in articleCategories" :key="item">
       <el-col :span="24">
         <div class="grid-content bg-purple-dark">
-          <h1 class="article-category-title">实战推荐</h1>
+          <h1 class="article-category-title">{{category.name}}</h1>
         </div>
       </el-col>
-      <el-col :span="6" v-for="quick in quickList">
+      <el-col :span="6" v-for="channel in channels">
         <div class="article-image">
           <img :src="quick.quickImageUrl"/>
         </div>
@@ -64,21 +58,22 @@
     name: 'mien',
     data: function () {
       return {
-        quickList: [],
+        banners: [],
+        channels: [],
         articleCategories: []
       };
     },
     methods: {
-      banners () {
+      getBanners () {
         let self = this;
         let params = {
           limit: 4
         };
-        let url = '/api/1.0/quick/getQuick';
+        let url = '/api/1.0/cms/banner/getBanner';
         self.$axios.get(url, params, {}, {emulateJSON: true})
           .then((res) => {
             console.log(res);
-            this.quickList = res.data;
+            this.banners = res.data;
           })
           .catch((error) => {
             self.logining = false;
@@ -86,16 +81,30 @@
             self.$message.error('banners获取失败，请联系管理员');
           });
       },
-      articleCategories () {
+      getChannels () {
         let self = this;
-        let params = {
-          limit: 10
-        };
-        let url = 'https://wonapi.maxleap.cn/1.0/cms/type';
+        let params = {};
+        let url = '/api/1.0/banner/getBanner';
+        self.$axios.get(url, params, {}, {emulateJSON: true})
+          .then((res) => {
+            console.log("banner");
+            console.log(res);
+            this.channels = res.data.results;
+          })
+          .catch((error) => {
+            self.logining = false;
+            console.log(error);
+            self.$message.error('banners获取失败，请联系管理员');
+          });
+      },
+      getArticleCategories () {
+        let self = this;
+        let params = {};
+        let url = '/api/1.0/cms/type';
         self.$axios.get(url, params, {}, {emulateJSON: true})
           .then((res) => {
             console.log(res);
-            this.articleCategories = res.data;
+            this.articleCategories = res.data.results;
           })
           .catch((error) => {
             self.logining = false;
@@ -105,7 +114,9 @@
       }
     },
     mounted: function () {
-      this.banners();
+      this.getBanners();
+      this.getChannels();
+      this.getArticleCategories();
     }
   };
 </script>
@@ -159,8 +170,7 @@
 </style>
 <style>
   .class-icon {
-    height: 90px;
-    padding: 45px 0;
+    margin: 15px 0;
   }
 </style>
 <style>
