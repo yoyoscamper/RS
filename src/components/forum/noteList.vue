@@ -16,7 +16,7 @@
     </div>
     <el-tabs type="border-card">
       <el-tab-pane :label="pane.name" v-for="pane in paneList" :key="pane.name" @click="changePane(pane.name)" v-loading="paneLoading">
-        <div v-for="note in noteList" :key="note.id" class="noteListContent">
+        <div v-for="note in noteList" :key="note.id" class="noteListContent" @click="chooseNote(note)">
             <i class="el-icon-message"></i>
             <label class="contentNum">{{note.contentNum}}</label>
             <label class="noteInfoTitle">{{note.title}}</label>
@@ -85,6 +85,10 @@
       };
     },
     methods: {
+      chooseNote (note) {
+        window.open(window.location.origin + '/noteContent?noteId=' + note.id);
+        // this.$router.push({name: 'noteContent', params: {note: note}});
+      },
       headCallBack () { // 关闭新建帖子弹框
         this.newNote.dialogVisible = false;
       },
@@ -118,6 +122,7 @@
     mounted: function () {
       this.$nextTick(function () {
         this.queryNoteList();
+        this.$store.state.activeMenu = 'forumMain';
       });
     }
   };
