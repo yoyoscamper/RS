@@ -36,7 +36,7 @@
           </el-form-item>
           <label class="descNum2">{{tpForm.descNum}}/6000</label>
           <el-form-item label="类型" prop="type">
-            <el-radio-group v-model="tpForm.type">
+            <el-radio-group v-model="tpForm.type" @change="changeType">
               <el-radio :label="1">图片投票</el-radio>
               <el-radio :label="2">文本投票</el-radio>
             </el-radio-group>
@@ -47,14 +47,50 @@
           </el-form-item>
           <!--图片选项-->
           <div v-if="tpForm.type === 1">
-            <div v-for="info in tpForm.picList" :key="info.id">
-              <i class="el-icon-plus"></i>
+            <div v-for="(info, index) in tpForm.picList" :key="info.id" class="picList">
+                <el-upload
+                  @click="changeIndex"
+                  class="plusBtn"
+                  ref="upload"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :file-list="info.fileList"
+                  :on-preview="handlePreview"
+                  :on-change="changeFile"
+                  :auto-upload="false"
+                  :multiple="false"
+                  :show-file-list="false">
+                <i class="el-icon-plus" v-if="info.picUrl == ''"></i>
+                <img :src="info.picUrl" v-else/>
+              </el-upload>
+              <el-input  size="small" v-model="info.content" placeholder="请输入15字以内描述"></el-input>
+              <i class="el-icon-close" @click="delPicInfo(index)"></i>
             </div>
           </div>
           <!--文本选项-->
-          <row v-else>
-
-          </row>
+          <div v-else>
+            <div v-for="(info, index) in tpForm.textList" :key="info.id" class="textList">
+              <el-input  size="small" v-model="info.content" placeholder="请输入15字以内描述"></el-input>
+              <i class="el-icon-close" @click="delTextInfo(index)"></i>
+            </div>
+          </div>
+          <el-form-item label="支持多选" class="border-t"  prop="more" label-width="80px" >
+            <el-switch size="small" v-model="tpForm.more"></el-switch>
+          </el-form-item>
+          <el-form-item label="投票有效期"  prop="validityTime" label-width="94px" >
+            <el-select v-model="tpForm.validityTime" placeholder="请选择投票有效期">
+              <el-option label="一天" value="day"></el-option>
+              <el-option label="一周" value="week"></el-option>
+              <el-option label="一个月" value="month"></el-option>
+              <el-option label="三个月" value="3month"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="投票可见性"  prop="visibility" label-width="94px" >
+            <el-select v-model="tpForm.visibility" placeholder="请选择投票有效期">
+              <el-option label="投票前可见" value="1"></el-option>
+              <el-option label="投票后可见" value="2"></el-option>
+              <el-option label="永久不可见" value="3"></el-option>
+            </el-select>
+          </el-form-item>
         </el-form>
       </el-tab-pane>
     </el-tabs>
@@ -85,6 +121,9 @@
             name: '',
             desc: '',
             descNum: 0,
+            more: false, // 是否支持多选
+            validityTime: 'day', // 投票有效期
+            visibility: '1', // 投票可见性
             type: 1,
             listId: 0, // 作为投票选项的id，从0开始累加
             picList: [],
@@ -104,22 +143,57 @@
             ],
             type: [
               { required: true, message: '请选择投票类型', trigger: 'blur' }
+            ],
+            more: [
+              { required: true, message: '请选择投票类型', trigger: 'blur' }
+            ],
+            validityTime: [
+              { required: true, message: '请选择投票有效期', trigger: 'blur' }
+            ],
+            visibility: [
+              { required: true, message: '请选择投票可见性', trigger: 'blur' }
             ]
           }
         };
       },
       methods: {
+        changeIndex () {
+          console.log(212);
+        },
+        changeFile (file, fileList) {
+          console.log(file);
+          console.log(fileList);
+        },
+        handlePreview (file) {
+          console.log(file);
+        },
+        delPicInfo (index) {
+          this.tpForm.picList.splice(index, 1);
+        },
+        delTextInfo (index) {
+          this.tpForm.textList.splice(index, 1);
+        },
+        changeType () {
+          this.listId = 0;
+          this.tpForm.picList = [];
+          this.tpForm.textList = [];
+        },
         addDesc () { // 添加投票选项
           if (this.tpForm.type === 1) { // 添加图片投票选项
             let info = {
               id: this.listId + 1,
               picUrl: '',
-              content: ''
+              content: '',
+              fileList: []
             };
             this.tpForm.picList.push(info);
             this.listId = this.listId + 1;
           } else { // 添加文字投票选项
-
+            let info = {
+              id: this.listId + 1,
+              content: ''
+            };
+            this.tpForm.textList.push(info);
           }
         },
         uploadSuccess (response, file, fileList) {
@@ -144,6 +218,20 @@
         handleClose () {
           this.activeName = 'first';
           this.$emit('headCallBack', false);
+          this.tpForm = {
+            name: '',
+            desc: '',
+            descNum: 0,
+            type: 1,
+            listId: 0, // 作为投票选项的id，从0开始累加
+            picList: [],
+            textList: []
+          };
+          this.ztForm = {
+            name: '',
+            desc: '',
+            descNum: 0
+          };
         },
         saveNote () {
           /* if (this.fileList.length === 0) {
@@ -166,6 +254,12 @@
           if (this.ztForm.desc.length > 6000) {
             this.ztForm.desc = this.ztForm.desc.substring(0, 6000);
           }
+        },
+        'tpForm.desc': function () {
+          this.tpForm.descNum = this.tpForm.desc.length;
+          if (this.tpForm.desc.length > 6000) {
+            this.tpForm.desc = this.tpForm.desc.substring(0, 6000);
+          }
         }
       }
     };
@@ -182,20 +276,13 @@
     height: 290px;
     overflow-y: auto;
   }
-  .descNum{
+  .descNum, .descNum2{
      position: relative;
      bottom: 25px;
     left: 77%;
      font-size: 12px;
      color: #ddd;
    }
-  .descNum2{
-    position: relative;
-    bottom: 43px;
-    left: 77%;
-    font-size: 12px;
-    color: #ddd;
-  }
   .el-input, .el-textarea{
     width: 92%;
   }
@@ -206,5 +293,41 @@
 }
   .addListBtn>i, .addListBtn>label{
     cursor: pointer;
+  }
+  .plusBtn{
+    cursor: pointer;
+    border: 1px solid #bdbdbd;
+    width: 14px;
+    padding: 0 5px;
+    margin-right: 12px;
+    float: left;
+  }
+  .picList .el-input{
+    float: left;
+    width: 80%;
+    margin-top: -3px;
+  }
+  .picList, .textList{
+    height: 46px;
+    margin-top: 16px;
+  }
+  .picList .el-icon-close, .textList .el-icon-close{
+    float: left;
+    margin-top: 3px;
+    font-size: 18px;
+    color: #adadad;
+    cursor: pointer;
+    margin-left: 20px;
+  }
+  .textList .el-input{
+    margin-left: 52px;
+    float: left;
+    width: 75%;
+  }
+  .el-switch{
+    margin-left: 13px;
+  }
+  .border-t{
+    border-top: 1px solid #efefef;
   }
 </style>
