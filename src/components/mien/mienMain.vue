@@ -19,7 +19,7 @@
           </el-carousel>
         </div>
         <el-row>
-          <el-col :span="6" v-for="banner in banners">
+          <el-col :span="6" v-for="banner in banners" :key="item">
             <div class="channel">
               <a href="" target="_blank">
                 <img class="channel-image" :src="banner.bannerImageUrl"></img>
@@ -36,7 +36,7 @@
           <h1 class="article-category-title">{{category.name}}</h1>
         </div>
       </el-col>
-      <el-col :span="6" v-for="channel in channels">
+      <el-col :span="6" v-for="channel in channels" :key="item">
         <div class="article-image">
           <img :src="quick.quickImageUrl"/>
         </div>
@@ -87,7 +87,7 @@
         let url = '/api/1.0/banner/getBanner';
         self.$axios.get(url, params, {}, {emulateJSON: true})
           .then((res) => {
-            console.log("banner");
+            console.log('banner');
             console.log(res);
             this.channels = res.data.results;
           })
