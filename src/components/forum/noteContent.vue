@@ -33,9 +33,18 @@
             <el-col :span="24" v-for="pic in picList" :key="pic.imgUrl">
               <img class="noteTitlePic" :src="pic.imgUrl"/>
             </el-col>
+            <br>
+            <label class="noteTime">2018-02-13 12:12</label>
+            <label class="replyBtn" @click="openReply">回复</label>
           </el-row>
-          <label class="noteTime">2018-02-13 12:12</label>
-          <label class="replyBtn" @click="openReply">回复</label>
+          <el-row class="replyInReply">
+            <el-col :span="24" v-for="reply in replyListTest" :key="reply.id">
+              <label class="replyUserName">{{reply.userName}}:</label>
+              <label>{{reply.content}}</label>
+              <br>
+              <label class="reply-l">{{reply.time}}</label>
+            </el-col>
+          </el-row>
         </el-col>
       </el-row>
     </div>
@@ -88,6 +97,19 @@
           replyList: [{
             id: '11'
           }], // 回复列表
+          replyListTest: [{
+            id: '11',
+            userName: '张三',
+            time: '2018-01-10',
+            content: '看过了'
+          },
+          {
+            id: '12',
+            userName: '张三',
+            time: '2018-01-10',
+            content: '真的吗'
+          }
+          ], // 回复列表
           listCount: 0, // 回复条数
           pageSize: 10,
           pageNum: 0,
@@ -232,5 +254,22 @@
     background: #fff;
     padding: 10px;
     min-height: 120px;
+  }
+  .replyInReply{
+    font-size: 12px;
+    padding: 10px;
+    background: #f7f7f7;
+  }
+  .replyInReply .el-col-24{
+    border-bottom: 1px solid #efefef;
+    margin-top: 5px;
+  }
+  .replyUserName{
+    color: #007DDB;
+  }
+  .reply-l{
+    float: right;
+    color: #61687d;
+    font-size: 11px;
   }
 </style>
