@@ -42,7 +42,7 @@
   .el-main {
     padding-bottom: 100px !important;
     height: 100vh;
-    padding: 30px 35px;
+    padding: 0!important;
     background-color: #f5f5f5;
     overflow-y: auto;
     overflow-x: hidden;

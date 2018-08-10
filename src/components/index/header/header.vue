@@ -32,7 +32,7 @@
         <div class="user-info" v-cloak>
           <div class="user-portrait">
             <!--<img src="../../../../static/images/ty.png" />-->
-            <img src="../../../../static/images/tx_black.png" />
+            <img src="../../../../static/images/tx_black.png" @click="toMyInfo"/>
           </div>
         </div>
       </div>
@@ -116,6 +116,9 @@
       };
     },
     methods: {
+      toMyInfo () { // 跳转至我的
+        window.open(window.location.origin + '/myMain');
+      },
       toHomePage () {
         this.$router.push('/homePage');
       },

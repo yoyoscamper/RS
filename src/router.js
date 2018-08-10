@@ -6,6 +6,7 @@ const noteList = () => import('./components/forum/noteList');
 const noteContent = () => import('./components/forum/noteContent');
 const videoViewMain = () => import('./components/videoView/videoViewMain');
 const courseMain = () => import('./components/thematicCourse/courseMain');
+const myMain = () => import('./components/setting/myMain');
 
 const routers = [ // 定义vue-router的路径和对应的组件，注意是component 不是components
   {
@@ -36,6 +37,9 @@ const routers = [ // 定义vue-router的路径和对应的组件，注意是comp
       },
       {
         name: 'noteContent', path: '/noteContent', component: noteContent
+      },
+      {
+        name: 'myMain', path: '/myMain', component: myMain
       }
     ]
   }
