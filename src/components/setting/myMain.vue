@@ -24,13 +24,66 @@
           </div>
         </div>
       </div>
+      <div>
+        <el-container>
+          <el-aside width="150px">
+            <div class="my-menu" v-for="menu in myMenu" :key="menu.id">
+              <label :id="menu.id" class="my-menu-title" @click="chooseMyMenu(menu.id)">{{menu.title}}</label>
+            </div>
+          </el-aside>
+          <el-main>
+            <store-list v-if="myMenuCurrent === 'member-store'"></store-list>
+          </el-main>
+        </el-container>
+      </div>
     </div>
 </template>
 
 <script>
-    export default {
-      name: 'myMain'
-    };
+  import storeList from './memberStore/storeList';
+  export default {
+    name: 'myMain',
+    components: {
+      storeList
+    },
+    data: function () {
+      return {
+        myMenu: [{
+          id: 'member-store',
+          title: '会员商城'
+        }, {
+          id: 'store-order',
+          title: '商城订单'
+        }, {
+          id: 'after-sale',
+          title: '商城售后'
+        }, {
+          id: 'my-forum',
+          title: '我的论坛'
+        }, {
+          id: 'customer-service',
+          title: '我的客服'
+        }],
+        myMenuCurrent: ''
+      };
+    },
+    methods: {
+      chooseMyMenu (menuId) {
+        this.myMenuCurrent = menuId;
+        let menuList = document.getElementsByClassName('my-menu-title');
+        for (let i = 0; i < menuList.length; i++) {
+          menuList[i].classList.remove('current-menu');
+        }
+        document.getElementById(menuId).classList.add('current-menu');
+      }
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        document.getElementsByClassName('my-menu-title')[0].classList.add('current-menu');
+        this.myMenuCurrent = this.myMenu[0].id;
+      });
+    }
+  };
 </script>
 
 <style scoped>
@@ -95,5 +148,29 @@
   .cursor-p{
     cursor: pointer;
     padding-right: 10px;
+  }
+  .el-container{
+    width: 100%;
+    padding: 20px 14%;
+  }
+  .my-menu{
+    color: #619dd2;
+    cursor: pointer;
+    padding: 10px 20px;
+  }
+  .my-menu-title{
+    cursor: pointer;
+    padding: 5px 22px;
+  }
+  .current-menu{
+    background: #6aa8d7;
+    color: #fff;
+    padding: 5px 22px;
+  }
+  .el-aside{
+    border-right: 1px solid #cadeec;
+  }
+  #myMain .el-main{
+    overflow-y: hidden;
   }
 </style>
