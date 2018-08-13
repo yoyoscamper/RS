@@ -8,6 +8,8 @@ const videoViewMain = () => import('./components/videoView/videoViewMain');
 const courseMain = () => import('./components/thematicCourse/courseMain');
 const myMain = () => import('./components/setting/myMain');
 const storeList = () => import('./components/setting/memberStore/storeList');
+const goodsInfo = () => import('./components/setting/memberStore/goodsInfo');
+const shopCart = () => import('./components/setting/memberStore/shopCart');
 
 const routers = [ // 定义vue-router的路径和对应的组件，注意是component 不是components
   {
@@ -44,6 +46,12 @@ const routers = [ // 定义vue-router的路径和对应的组件，注意是comp
       },
       {
         name: 'storeList', path: '/storeList', component: storeList
+      },
+      {
+        name: 'goodsInfo', path: '/goodsInfo', component: goodsInfo
+      },
+      {
+        name: 'shopCart', path: '/shopCart', component: shopCart
       }
     ]
   }
