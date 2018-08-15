@@ -1,10 +1,10 @@
 <template>
-  <el-dialog id="shopCart" title="购物车" :visible.sync="shopCartVisible" width="66%" :before-close="handleClose">
+  <el-dialog id="shopCart" title="购物车" :visible.sync="shopCartVisible" width="66%" @open="openShop" :before-close="handleClose">
     <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
     <el-checkbox-group v-model="checkedGoods" @change="handleCheckedChange">
       <el-row class="shopCartInfo" v-for="(goods,index) in shopCartList" :key="goods.id">
         <el-col :span="1">
-          <el-checkbox :label="goods.title"></el-checkbox>
+          <el-checkbox :label="goods.id"></el-checkbox>
         </el-col>
         <el-col :span="3">
           <img class="info-img" :src="goods.img"/>
@@ -28,12 +28,13 @@
     <span slot="footer" class="footer dialog-footer">
       <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
       <el-button class="countBtn" type="primary" @click="handleClose">结算</el-button>
+      <div class="allPrice">¥{{allPrice}}</div>
     </span>
   </el-dialog>
 </template>
 
 <script>
-    var cityOptions = ['11'];
+    var goodsOptions = [];
     export default {
       name: 'shopCart',
       props: ['shopCartVisible'],
@@ -55,32 +56,72 @@
               num: 1
             }
           ],
-          checkAll: false,
-          checkedGoods: [],
-          isIndeterminate: true
+          checkAll: false, // 是否全选
+          checkedGoods: [], // 选中的商品
+          isIndeterminate: true,
+          allPrice: 0 // 选中的总价格
         };
       },
       methods: {
+        openShop () {
+          // console.log(JSON.parse(localStorage.shopCartList));
+          // if (JSON.parse(localStorage.shopCartList) !== undefined) {
+          //   this.shopCartList = localStorage.shopCartList;
+          // }
+          // if (localStorage.checkedGoods !== undefined) {
+          //   this.checkedGoods = localStorage.checkedGoods;
+          // }
+          goodsOptions = [];
+          for (let i = 0; i < this.shopCartList.length; i++) {
+            goodsOptions.push(this.shopCartList[i].id);
+          }
+        },
         minusNum (index) {
           if (this.shopCartList[index].num > 1) {
             this.shopCartList[index].num = this.shopCartList[index].num - 1;
           }
+          this.countFinalPrice();
         },
         plusNum (index) {
           // todo不能大于库存数
           this.shopCartList[index].num = this.shopCartList[index].num + 1;
+          this.countFinalPrice();
         },
         handleClose () {
           this.$emit('headCallBack', false);
         },
         handleCheckAllChange (val) {
-          this.checkedGoods = val ? cityOptions : [];
+          this.checkedGoods = val ? goodsOptions : [];
           this.isIndeterminate = false;
+          let count = 0;
+          if (val) { // 全选
+            for (let j = 0; j < this.shopCartList.length; j++) { // 计算总价
+              count += this.shopCartList[j].price * this.shopCartList[j].num;
+            }
+          }
+          this.allPrice = count;
+          localStorage.setItem('shopCartList', this.shopCartList);
+          localStorage.setItem('checkedGoods', this.checkedGoods);
         },
         handleCheckedChange (value) {
+          console.log(this.checkedGoods);
           let checkedCount = value.length;
           this.checkAll = checkedCount === this.shopCartList.length;
           this.isIndeterminate = checkedCount > 0 && checkedCount < this.shopCartList.length;
+          this.countFinalPrice();
+          localStorage.setItem('shopCartList', this.shopCartList);
+          localStorage.setItem('checkedGoods', this.checkedGoods);
+        },
+        countFinalPrice () {
+          let count = 0;
+          for (let i = 0; i < this.checkedGoods.length; i++) {
+            for (let j = 0; j < this.shopCartList.length; j++) {
+              if (this.checkedGoods[i] === this.shopCartList[j].id) {
+                count += this.shopCartList[j].price * this.shopCartList[j].num;
+              }
+            }
+          }
+          this.allPrice = count;
         }
       }
     };
@@ -135,5 +176,12 @@
   }
   #shopCart .countBtn{
     float: right;
+    margin-bottom: 20px;
+  }
+  #shopCart .allPrice{
+    float: right;
+    margin-top: 10px;
+    margin-right: 20px;
+    color: #ff4518;
   }
 </style>

@@ -33,6 +33,7 @@
           </el-aside>
           <el-main>
             <store-list v-if="myMenuCurrent === 'member-store'"></store-list>
+            <order-list v-if="myMenuCurrent === 'store-order'"></order-list>
           </el-main>
         </el-container>
       </div>
@@ -41,10 +42,12 @@
 
 <script>
   import storeList from './memberStore/storeList';
+  import orderList from './memberStore/orderList';
   export default {
     name: 'myMain',
     components: {
-      storeList
+      storeList, // 商城
+      orderList // 订单
     },
     data: function () {
       return {
