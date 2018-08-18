@@ -1,7 +1,9 @@
 <template>
   <div id="orderList">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane v-for="pane in paneList" :key="pane" :label="pane.label" :name="pane.name"></el-tab-pane>
+      <el-tab-pane v-for="pane in paneList" :key="pane" :label="pane.label" :name="pane.name">
+        <label class="font-c-g" v-if="orderList.length === 0">暂无订单</label>
+      </el-tab-pane>
     </el-tabs>
 
   </div>
@@ -31,7 +33,8 @@
           }, {
             label: '交易失败',
             name: '5'
-          }]
+          }],
+          orderList: []
         };
       },
       methods: {
@@ -43,5 +46,10 @@
 </script>
 
 <style scoped>
-
+#orderList{
+  padding: 0 20px;
+}
+  .font-c-g{
+    color: #666467;
+  }
 </style>

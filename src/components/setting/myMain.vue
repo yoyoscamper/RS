@@ -34,6 +34,8 @@
           <el-main>
             <store-list v-if="myMenuCurrent === 'member-store'"></store-list>
             <order-list v-if="myMenuCurrent === 'store-order'"></order-list>
+            <after-sale-main  v-if="myMenuCurrent === 'after-sale'"></after-sale-main>
+            <my-forum v-if="myMenuCurrent === 'my-forum'"></my-forum>
           </el-main>
         </el-container>
       </div>
@@ -41,13 +43,17 @@
 </template>
 
 <script>
+  import myForum from './myForum/myForum';
+  import afterSaleMain from './afterSale/afterSaleMain';
   import storeList from './memberStore/storeList';
-  import orderList from './memberStore/orderList';
+  import orderList from './order/orderList';
   export default {
     name: 'myMain',
     components: {
       storeList, // 商城
-      orderList // 订单
+      orderList, // 订单
+      afterSaleMain, // 商城售后
+      myForum // 我的论坛
     },
     data: function () {
       return {
