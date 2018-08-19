@@ -31,7 +31,19 @@
           <label class="noteInfoContent">回复：{{note.content}}</label>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="我的投票" name="third">我的投票</el-tab-pane>
+      <el-tab-pane label="我的投票" name="third">
+        <div v-for="note in voteList" :key="note.id" class="noteListContent" @click="chooseNote(note)">
+          <img class="voteLogo" src="../../../assets/mySetting/vote.png"/>
+          <label class="contentNum">{{note.contentNum}}</label>
+          <label class="noteInfoTitle">【投票】{{note.title}}</label>
+          <label class="noteDate">{{note.date}}</label>
+          <label class="noteUserName">{{note.userName}}</label>
+          <img class="noteUserLogo" :src="note.logoUrl"/>
+          <br>
+          <label class="noteInfoContent">共{{note.voteNum}}个投票选项</label>
+          <label class="voteState">(我已投票)</label>
+        </div>
+      </el-tab-pane>
     </el-tabs>
 
 
@@ -83,7 +95,24 @@
               content: '这是一条回复',
               logoUrl: require('../../../assets/forumPic/username.png')
             }
-          ]
+          ],
+          voteList: [{
+            id: '12',
+            voteNum: 3, // 投票选项数量
+            userName: '一清',
+            voteState: true, // 是否已投票
+            voteCount: 1, // 已投票数量
+            title: '问题处理',
+            date: '2018-02-09',
+            contentNum: 3,
+            content: '好的',
+            logoUrl: require('../../../assets/forumPic/username.png'),
+            logoUrlList: [
+              {
+                logoUrl: require('../../../assets/forumPic/username.png')
+              }
+            ]
+          }]
         };
       },
       methods: {
@@ -154,5 +183,12 @@
   #myTies .contentNum, .el-icon-message{
     font-size: 12px;
     color: #bbbbbb;
+  }
+  #myTies .voteLogo{
+    width: 12px;
+  }
+  #myTies .voteState{
+    font-size: 12px;
+    color: red;
   }
 </style>

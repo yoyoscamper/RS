@@ -18,15 +18,25 @@
 
     <!-----------------------我的帖子---------------------------->
     <my-ties v-if="showPage === '1'"></my-ties>
+
+    <!-----------------------我的消息---------------------------->
+    <my-message v-if="showPage === '2'"></my-message>
+
+    <!-----------------------我的关注---------------------------->
+    <my-focus v-if="showPage === '3'"></my-focus>
   </div>
 </template>
 
 <script>
+  import myFocus from './myFocus';
+  import myMessage from './myMessage';
   import myTies from './myTies';
   export default {
     name: 'myForum',
     components: {
-      myTies
+      myTies,
+      myMessage,
+      myFocus
     },
     data: function () {
       return {
