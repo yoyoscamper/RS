@@ -22,6 +22,7 @@ import axios from 'axios';
  */
 import vueResource from 'vue-resource';
 import EasyScroll from 'easyscroll';
+
 Vue.use(EasyScroll);
 Vue.use(vueResource);
 Vue.config.productionTip = false; // 来关闭生产模式下给出的提示
@@ -29,6 +30,7 @@ Vue.prototype.$axios = axios.create({
   headers: {
     'x-ml-appid': '5add7ee40351cb0007295c8f',
     'x-ml-apikey': 'amtKNmFmbS1YVm9wbHRfWFNJdDFYZw',
+    'X-ML-MasterKey': 'dmpjZDZEZXVNbDlCdVlGdHk0UmpDQQ',
     'content-type': 'application/json'
   }
 });
@@ -49,5 +51,5 @@ new Vue({
   router,
   store,
   template: '<App/>', // 这里是把'./App'的内容加到这个模板中
-  components: { App } // 这里的App等于App: App ，名称要和模板名称一样，上面的template中写的App,这里也要是App
+  components: {App} // 这里的App等于App: App ，名称要和模板名称一样，上面的template中写的App,这里也要是App
 });

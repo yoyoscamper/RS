@@ -4,6 +4,8 @@ const mien = () => import('./components/mien/mienMain');
 const forumMain = () => import('./components/forum/forumMain');
 const noteList = () => import('./components/forum/noteList');
 const noteContent = () => import('./components/forum/noteContent');
+const articleList = () => import('./components/mien/articleList');
+const articleDetail = () => import('./components/mien/articleDetail');
 const videoViewMain = () => import('./components/videoView/videoViewMain');
 const courseMain = () => import('./components/thematicCourse/courseMain');
 const myMain = () => import('./components/setting/myMain');
@@ -41,6 +43,12 @@ const routers = [ // 定义vue-router的路径和对应的组件，注意是comp
       },
       {
         name: 'noteContent', path: '/noteContent', component: noteContent
+      },
+      {
+        name: 'articleList', path: '/articleList', component: articleList
+      },
+      {
+        name: 'articleDetail', path: '/articleDetail', component: articleDetail
       },
       {
         name: 'myMain', path: '/myMain', component: myMain

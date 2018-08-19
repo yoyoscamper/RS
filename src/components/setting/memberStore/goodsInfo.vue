@@ -108,11 +108,26 @@
         },
         changeTab (tab, event) {
           console.log(tab, event);
+        },
+        getGoodInfo () {
+          let self = this;
+          let params = {};
+          let goodsId = this.$route.params.goodsId;
+          let url = '/1.0/products/client/' + goodsId;
+          self.$axios.get(url, params, {}, {emulateJSON: true})
+            .then((res) => {
+              console.log(res);
+              this.goods = res.data.results;
+            })
+            .catch((error) => {
+              self.logining = false;
+              console.log(error);
+              self.$message.error('articleCategories获取失败，请联系管理员');
+            });
         }
       },
-      activated: {
-        queryGoodsInfo () { // 查询详情
-        }
+      mounted: function () {
+        this.getGoodInfo();
       }
     };
 </script>

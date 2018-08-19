@@ -12,9 +12,9 @@
       </el-col>
       <el-col :span="19">
         <div class="grid-content bg-purple">
-          <el-carousel indicator-position="outside">
-            <el-carousel-item v-for="item in 4" :key="item">
-              <h3>{{ item }}</h3>
+          <el-carousel indicator-position="outside" class="banner-carousel">
+            <el-carousel-item v-for="banner in banners" :key="item" class="banner-carousel">
+              <img class="banner-image" :src="banner.bannerImageUrl"/>
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -22,7 +22,7 @@
           <el-col :span="6" v-for="banner in banners" :key="item">
             <div class="channel">
               <a href="" target="_blank">
-                <img class="channel-image" :src="banner.bannerImageUrl"></img>
+                <img class="channel-image" :src="banner.bannerImageUrl"/>
                 <p class="challen-title">{{banner.bannerName}}</p>
               </a>
             </div>
@@ -111,6 +111,14 @@
             console.log(error);
             self.$message.error('articleCategories获取失败，请联系管理员');
           });
+      },
+      chooseCategory (categoryId) { // 选择分类
+        window.open(window.location.origin + '/articleDetail');
+        // this.$router.push({name: 'noteList', params: {forumId: forumId}});
+      },
+      chooseArticle (articleId) { // 选择文章
+        window.open(window.location.origin + '/articleList');
+        // this.$router.push({name: 'noteList', params: {forumId: forumId}});
       }
     },
     mounted: function () {
@@ -120,51 +128,24 @@
     }
   };
 </script>
-
 <style scoped>
-  .el-header, .el-footer {
-    background-color: #B3C0D1;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
+  .main {
+    width: 1386px;
+    margin: 0 auto;
+  }
+</style>
+<style scoped>
+  .banner-carousel {
+    height: 500px;
   }
 
-  .el-aside {
-    background-color: #D3DCE6;
-    color: #333;
-    text-align: center;
-    line-height: 200px;
+  .banner-image {
+    min-height: 550px;
   }
-
-  .el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    line-height: 160px;
-  }
-
-  body > .el-container {
-    margin-bottom: 40px;
-  }
-
-  .el-container:nth-child(5) .el-aside,
-  .el-container:nth-child(6) .el-aside {
-    line-height: 260px;
-  }
-
-  .el-container:nth-child(7) .el-aside {
-    line-height: 320px;
-  }
-
   .channel {
     width: 90px;
     height: 90px;
     margin: 0 30px;
-  }
-
-  .main {
-    width: 1200px;
-    margin: auto;
   }
 
 </style>
